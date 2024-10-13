@@ -1,24 +1,20 @@
 # Melanchthon en Fijnstof
 Het meten van fijnstof kan inzichtelijk maken hoe schoon de lucht in je omgeving is. Er zijn wereldwijd richtlijnen voor de maximale fijnstof concentratie waar je aan blootgesteld zou mogen worden. Voor fijnstof heeft de [WHO](https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health) de volgende AQG levels (air-quality-guidelines) voorgeschreven:
 
-------------------------------
-|PM | gemiddelde over | AQG  |
-------------------------------
-|PM2.5 | jaarlijks | 5$\mu$g/m$^3$  |
-|PM2.5 | 24 uur    | 15$\mu$g/m$^3$ |
-|PM10  | jaarlijks | 15$\mu$g/m$^3$  |
-|PM10  | 24 uur    | 45$\mu$g/m$^3$ |
-------------------------------
+PM | gemiddelde over | AQG  
+---|-----------------|----------
+PM2.5 | jaarlijks | 5 ug/m^3 
+PM2.5 | 24 uur    | 15 ug/m^3
+PM10  | jaarlijks | 15 ug/m^3
+PM10  | 24 uur    | 45 ug/m^3
 
 In [Nederland](https://www.infomil.nl/onderwerpen/landbouw/stof/handreiking-fijn-1/juridisch-kader/wettelijke-eisen/) zijn andere waarden als grenswaarden ingesteld:
 
-------------------------------
 |PM | gemiddelde over | AQG  |
-------------------------------
-|PM2.5 | jaarlijks | 25$\mu$g/m$^3$  |
-|PM10  | jaarlijks | 40$\mu$g/m$^3$  |
-|PM10  | 24 uur    | 50$\mu$g/m$^3$ |
-------------------------------
+|-----|----------------|---------|
+|PM2.5 | jaarlijks | 25 ug/m^3  |
+|PM10  | jaarlijks | 40 ug/m^3  |
+|PM10  | 24 uur    | 50 ug/m^3 |
 
 In dit project ga je onderzoeken welke blootstelling je in je eigen omgeving ervaart. En hoe nauwkeurig deze blootstelling is te meten. Het lectoraat [Smart Sensor Systems van de Haagse Hogeschool](https://www.dehaagsehogeschool.nl/onderzoek/lectoraten/smart-sensor-systems) doet zelf ook actief onderzoek naar blootstelling aan verschillende grootheden, waar fijnstof er een van is.
 
@@ -35,14 +31,13 @@ De fijnstof sensor [Sensirion SPS30](https://sensirion.com/products/catalog/SPS3
 
 De sensor geeft de volgende waarden terug:
 
--------------------------------------------------------------
+
 | naam  | grootte bereik    | nauwkeurigheid                |
--------------------------------------------------------------
-| PM1.0 | $0.3 - 1.0 \mu$m  | 5$\mu$g/m$^3$ + 5% meetwaarde |
-| PM2.5 | $0.3 - 2.5 \mu$m  | 5$\mu$g/m$^3$ + 5% meetwaarde |
-| PM4.0 | $0.3 - 4.0 \mu$m  | 25$\mu$g/m$^3$                |
-| PM10  | $0.3 - 10.0 \mu$m | 25$\mu$g/m$^3$                |
--------------------------------------------------------------
+--------|-------------------|-------------------------------|
+| PM1.0 | 0.3 - 1.0 um  | 5 ug/m^3 + 5% meetwaarde |
+| PM2.5 | 0.3 - 2.5 um  | 5 ug/m^3 + 5% meetwaarde |
+| PM4.0 | 0.3 - 4.0 um  | 25 ug/m^3                |
+| PM10  | 0.3 - 10.0 um | 25 ug/m^3                |
 
 ## Aansluiting
 De sensor moet via de 5V aansluiting van de Raspberry Pi Pico aangesloten worden. Met de groene kant onder en kijken naar de sensor ziet de zijkant er zo uit:
@@ -56,13 +51,25 @@ Pin 1 tot en met 5 zijn dan:
 1. VDD (5V)
 2. SDA
 3. SCL
-4. GND (for I2C)
+4. GND (voor I2C)
 5. GND
 
 Pin 4 moet net als pin 5 met de GND verbonden zijn om de I2C aansluiting van de sensor te gebruiken. 
+De software om de sensor met een Raspberry Pi Pico uit te lezen staat in de lib directory van dit repositorie. In diezelfde directory staan ook bibliotheken die je kan gebruiken om een GPS sensor uit te lezen, of een OLED scherm aan te sturen. 
 
-## Gebruik
-When the sensor starts (`sps30.start_meaurement`) the fan will run for 10 seconds at maximum power to clean the device.
+Voor gebruik moet de `melanchthon_sps30.py` en de `sps30.py` file naar de `lib` folder op de Raspberry Pi Pico geupload worden. Daarna kunnen de `sps_...py` files gebruikt worden, afhankelijk van de toepassing. 
+Door deze files te hernoemen naar `main.py` worden ze bij opstarten van de Raspberry Pi Pico gelijk uitgevoerd. Op die manier is het mogelijk zonder computer in de buurt toch gebruik te maken van de sensor. 
 
-In the `main.py` file the sensor writes the measurement data to the serial port. In Thonny it will display the data on screen.
+De file `melanchthon_sps30.py` is zo gemaakt dat deze alleen de PM1.0, PM2.5, PM4.0 en PM10 waarden teruggeeft. Daarnaast begint de sensor eerst met een schoonmaak routine zodra de file uitgevoerd wordt.
 
+### SPS print
+De file `sps_print.py` geeft de gemeten waarden weer op het scherm via Thonny of de serial port. 
+
+### SPS save
+De file `sps_save.py` slaat de data gemeten door de sensor op. Opslag van de Raspberry Pi Pico is beperkt (er blijft ongeveer 1.5 Mb over na uploaden van de code) en moet dus regelmatig van de sensor gedownload worden. 
+
+### SPS display
+De file `sps_display.py` geeft de gemeten waarden weer op een OLED scherm met de SSD1306 driver.
+
+### SPS GPS
+De file `sps_gps.py` geeft de locatie en tijd naast de gemeten fijnstof concentratie weer op het scherm via Thonny of de serial port.
