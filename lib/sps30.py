@@ -27,6 +27,7 @@ class SPS30:
         self.i2c = i2c
         self.output = print_output
         self.found = self.__findi2c()
+        self.starttime = time.time()
     
     def write_read(self, cmd, nbytes=60):
         if len(cmd) == 2:
@@ -36,9 +37,22 @@ class SPS30:
     
     def start_measurement(self):
         cmd = bytearray([0x00, 0x10, 0x03, 0x00, self.calc_crc8([0x03, 0x00])])
-        self.i2c.writeto(self.address, cmd) # measurement mode
+        max_tries = -10
+        while max_tries < 0:
+            try:
+                self.i2c.writeto(self.address, cmd) # measurement mode
+                self.cleanup(dt=10)
+                max_tries = 1
+            except OSError as e:
+                print(e)
+                max_tries += 1
+                time.sleep(1)
+    
+    def cleanup(self, dt=5):
+        self.starttime = time.time()
         self.i2c.writeto(self.address, bytearray([0x56, 0x07])) #cleanup
-        time.sleep(10)
+        time.sleep(dt)
+        self.read_data()
         
     def gen_array(self, command):
         command.append(self.calc_crc8(command))
@@ -56,6 +70,8 @@ class SPS30:
         self.last_measurement = []
         for ii in range(len(cleandata)//2):
             self.last_measurement.append(self.calcFloat(cleandata[2*ii] + cleandata[2*ii+1]))
+        if (time.time() - self.starttime) % (259200) == 0: # cleanup every 3 days
+            self.cleanup()
         
         
     def __findi2c(self):
