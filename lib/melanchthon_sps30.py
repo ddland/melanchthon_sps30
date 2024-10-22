@@ -16,6 +16,7 @@ import time
 class SPS(SPS30):
     data_header = ['tijd s','pm 1.0 ug/m3','pm 2.5 ug/m3','pm 4.0 ug/m3','pm 10 ug/m3']
     waarden = [0,0,0,0,0]
+    
     def get_data(self):
         self.read_data()
         self.waarden[0] = time.time()

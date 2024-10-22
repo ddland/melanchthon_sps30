@@ -8,6 +8,7 @@ delay = 5 # wacht 5 seconden na elke meting
 # sensor verbonden met pin 0 en 1
 i2c = machine.I2C(0, sda = machine.Pin(0), scl = machine.Pin(1), freq=100000)
 sps = SPS(i2c)
+
 sps.start_measurement()
 
 print(' '.join(str(ii) for ii in sps.data_header))
@@ -23,6 +24,3 @@ while measure:
     except KeyboardInterrupt:
         measure = 0
         
-        
-        
-    

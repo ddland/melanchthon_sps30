@@ -47,6 +47,7 @@ class SPS30:
                 print(e)
                 max_tries += 1
                 time.sleep(1)
+        self.read_data() # first measurement usualy doesn't look good
     
     def cleanup(self, dt=5):
         self.starttime = time.time()
@@ -75,12 +76,13 @@ class SPS30:
         
         
     def __findi2c(self):
-        if self.address in self.i2c.scan():
+        i2cs = self.i2c.scan()
+        if (self.address in i2cs) and (len(i2cs) < 10) :
             if self.output:
                 print('device found')
             return True
         else:
-            return False
+            raise OSError(5, "device not found on I2C bus: ", i2cs)
         
     def calc_crc8(self, byte_array):
         """

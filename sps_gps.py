@@ -8,6 +8,9 @@ from melanchthon_sps30 import SPS
 delay = 5 # wacht 5 seconden na elke meting
 
 class GPS:
+    """ Class om een GPS UART sensor in een andere thread data te laten
+        vergaren. Data wordt in een datetime methode beschikbaar gesteld.
+    """
     def __init__(self, uart, parser):
         self.uart = uart
         self.parser = parser
@@ -47,6 +50,7 @@ if __name__ == "__main__":
     uart = machine.UART(1, baudrate=9600, tx=machine.Pin(4), rx=machine.Pin(5))
     parser = micropyGPS.MicropyGPS(location_formatting='dd')
     gps = GPS(uart, parser)
+    # start GPS op een andere thread, kan hier de fijnstof gemeten worden.
     _thread.start_new_thread(gps.start, ())
     
     i2c = machine.I2C(0, sda = machine.Pin(0), scl = machine.Pin(1), freq=100000)
@@ -68,7 +72,7 @@ if __name__ == "__main__":
             measure = 0
             gps.running = False
 
-    while gps.running:
+    while gps.running: # laat de gps afsluiten
         pass
     print('all done...')
     

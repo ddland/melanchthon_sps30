@@ -60,16 +60,23 @@ De software om de sensor met een Raspberry Pi Pico uit te lezen staat in de lib 
 Voor gebruik moet de `melanchthon_sps30.py` en de `sps30.py` file naar de `lib` folder op de Raspberry Pi Pico geupload worden. Daarna kunnen de `sps_...py` files gebruikt worden, afhankelijk van de toepassing. 
 Door deze files te hernoemen naar `main.py` worden ze bij opstarten van de Raspberry Pi Pico gelijk uitgevoerd. Op die manier is het mogelijk zonder computer in de buurt toch gebruik te maken van de sensor. 
 
-De file `melanchthon_sps30.py` is zo gemaakt dat deze alleen de PM1.0, PM2.5, PM4.0 en PM10 waarden teruggeeft. Daarnaast begint de sensor eerst met een schoonmaak routine zodra de file uitgevoerd wordt.
+Het bestand `melanchthon_sps30.py` is zo gemaakt dat deze alleen de PM1.0, PM2.5, PM4.0 en PM10 waarden teruggeeft. Daarnaast begint de sensor eerst met een schoonmaak routine zodra het bestand uitgevoerd wordt.
+
+## Code
+De bestanden (sps_xxx.py) maken op verschillende manieren gebruik van de sensor en geven de data weer. Van opslaan tot via de telefoon uitlezen, er zijn veel mogelijkheden. 
+Wil je de sensor zonder computer (Thonny) gebruiken, dan moet de sps_xxx.py file hernoemd worden naar main.py (en alle afhankelijkheden moeten op de Raspberry Pi Pico in de lib folder staan), deze file wordt automatisch uitgevoerd als de Rasbperry Pi Pico van stroom voorzien wordt. Om data daarna van de Raspberry Pi Pico af te lezen moet die weer aangesloten worden op de computer om de bestanden van de microcontroller naar de computer te kopieren. 
 
 ### SPS print
-De file `sps_print.py` geeft de gemeten waarden weer op het scherm via Thonny of de serial port. 
+Het bestand `sps_print.py` geeft de gemeten waarden weer op het scherm via Thonny of de serial port. 
 
 ### SPS save
-De file `sps_save.py` slaat de data gemeten door de sensor op. Opslag van de Raspberry Pi Pico is beperkt (er blijft ongeveer 1.5 Mb over na uploaden van de code) en moet dus regelmatig van de sensor gedownload worden. 
+Het bestand `sps_save.py` slaat de data gemeten door de sensor op. Opslag van de Raspberry Pi Pico is beperkt (er blijft ongeveer 1.5 Mb over na uploaden van de code) en moet dus regelmatig van de sensor gedownload worden. 
 
 ### SPS display
-De file `sps_display.py` geeft de gemeten waarden weer op een OLED scherm met de SSD1306 driver.
+Het bestand `sps_display.py` geeft de gemeten waarden weer op een OLED scherm met de SSD1306 driver.
 
 ### SPS GPS
-De file `sps_gps.py` geeft de locatie en tijd naast de gemeten fijnstof concentratie weer op het scherm via Thonny of de serial port.
+Het bestand `sps_gps.py` geeft de locatie en tijd naast de gemeten fijnstof concentratie weer op het scherm via Thonny of de serial port.
+
+### SPS_webserver
+De Raspberry Pi Pico start een access-point (`HHS-MELACHTHON`) waar je op kan inloggen met je computer of telefoon (password: 123456789). Daarna kan je naar de website: [192.168.4.1](http://192.168.4.1) gaan waar je de metingen kan uitvoeren (en aflezen). Data kan je kopieren van de website naar een logbestand, of je kan via andere tools (bijvoorbeeld een python scripts) automatisch elke paar seconden de data uitlezen.  

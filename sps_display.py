@@ -38,10 +38,9 @@ while measure:
     try:
         # zolang ctrl-c niet ingedrukt...
         sps.get_data()
-        # maak van de data een ; gescheiden string
         data = sps.waarden
+        # schrijf de data weg naar het scherm
         write(display, ['t:%d' %(data[0] - t0), '1.0:%2.2f' %(data[1]), '2.5:%2.2f' %(data[2])], [0,0,0], [16,32,48])
-        # print de data naar file (let op, er is maar weinig ruimte..
         time.sleep(delay)
     except KeyboardInterrupt:
         measure = 0        
