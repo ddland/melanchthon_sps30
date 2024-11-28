@@ -22,8 +22,8 @@ delay = 5 # wacht 5 seconden na elke meting
 
 # maak verbinding met het scherm
 i2c1 = machine.I2C(1, sda = machine.Pin(14), scl = machine.Pin(15))
-display = ssd1306.SSD1306_I2C(64,64, i2c1)
-
+#display = ssd1306.SSD1306_I2C(64,64, i2c1)
+display = ssd1306.SSD1306_I2C(128,64, i2c1)
 write(display, 'starting', 0,16)
 # maak verbinding met de sensor en start de sensor op (duurt ~ 10 seconden)
 i2c0 = machine.I2C(0, sda = machine.Pin(0), scl = machine.Pin(1), freq=100000)

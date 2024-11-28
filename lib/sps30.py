@@ -37,19 +37,24 @@ class SPS30:
     
     def start_measurement(self):
         cmd = bytearray([0x00, 0x10, 0x03, 0x00, self.calc_crc8([0x03, 0x00])])
-        max_tries = -10
-        while max_tries < 0:
+        max_tries = 0
+        while max_tries < 10:
             try:
                 self.i2c.writeto(self.address, cmd) # measurement mode
+                time.sleep(0.5) # wait till everthing is ready
                 self.cleanup(dt=10)
-                max_tries = 1
+                max_tries = 11
             except OSError as e:
-                print(e)
                 max_tries += 1
-                time.sleep(1)
-        self.read_data() # first measurement usualy doesn't look good
+                print('trying to configure %d/10' %(max_tries))
+                print(e)
+                time.sleep(0.5)
+        if max_tries == 10:
+            raise OSError("Not possible to configure sensor. Something is wrong...")
+
+        self.read_data() # first measurement usualy doesn't look goodself.i2c.writeto(self.address, cmd) # measurement mode
     
-    def cleanup(self, dt=5):
+    def cleanup(self, dt=10):
         self.starttime = time.time()
         self.i2c.writeto(self.address, bytearray([0x56, 0x07])) #cleanup
         time.sleep(dt)
@@ -76,13 +81,14 @@ class SPS30:
         
         
     def __findi2c(self):
-        i2cs = self.i2c.scan()
-        if (self.address in i2cs) and (len(i2cs) < 10) :
+        i2cbus = self.i2c.scan()
+        if (self.address in i2cbus) and (len(i2cbus) < 10):
             if self.output:
                 print('device found')
             return True
         else:
-            raise OSError(5, "device not found on I2C bus: ", i2cs)
+            print("I2Cbus devices: ", i2cbus)
+            raise OSError("SPS30 not found on I2C bus!")
         
     def calc_crc8(self, byte_array):
         """
