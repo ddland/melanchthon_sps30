@@ -8,7 +8,7 @@ Basis plot waarin van een dataset de tijd uitgezet wordt tegen de gemeten waarde
 ## plot_boxplot.py
 Uit meerdere datafiles wordt per dag een boxplot aangemaakt. Op deze manier kan je goed verschillen op verschillende momenten zien. 
 
-De tijds-as wordt aangemaakt door uit de filenaam (`melanchthon_001/20241120.csv') op de juiste locatie de maand (11) en dag (20 ) te knippen.
+De tijds-as wordt aangemaakt door uit de filenaam (`melanchthon_001/20241120.csv`) op de juiste locatie de maand (11) en dag (20 ) te knippen.
 
 
 
