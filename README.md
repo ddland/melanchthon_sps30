@@ -65,3 +65,6 @@ Het bestand `melanchthon_sps30.py` is zo gemaakt dat deze alleen de PM1.0, PM2.5
 ## Voorbeeldcode
 Om data op een (makkelijke) manier uit de sensor weg te schrijven (met of zonder GPS unit of schermpje) staan hier [verschillende voorbeeld scripts](SCRIPTS.md) Deze code kan je uitvoeren of eventueel uitbreiden en aanpassen. 
 Bij een deel van de scripts zijn ook afbeeldingen toegevoegd van een mogelijke aansluiting. 
+
+## Plotten
+In de `plotten` folder staan (python) voorbeelden om de gemeten data weer te geven. 
