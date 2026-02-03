@@ -41,6 +41,6 @@ ax.set_xticklabels(['achtergrond binnen', 'kaars binnen','buiten'], rotation=40)
 #fig.autofmt_xdate()
 plt.tight_layout()
 # sla de data op
-plt.savefig('figuur.pdf')
+plt.savefig('boxplot.jpg')
 plt.show()
 
